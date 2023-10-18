@@ -9,20 +9,23 @@ video_path = './test2.mp4'
 cap = cv2.VideoCapture(video_path)
 
 ret = True
-# read frames
+
 while ret:
+
     ret, frame = cap.read()
 
     if ret:
-
-        # detect objects
-        # track objects
+        
         results = model.track(frame, persist=True)
 
-        # plot results
-        # cv2.rectangle
-        # cv2.putText
         frame_ = results[0].plot()
+
+        # Redimensionar la imagen
+        scale_percent = 60  # Porcentaje de reducción (puedes ajustarlo)
+        width = int(frame_.shape[1] * scale_percent / 100)
+        height = int(frame_.shape[0] * scale_percent / 100)
+        dim = (width, height)
+        frame_ = cv2.resize(frame_, dim, interpolation=cv2.INTER_AREA)
 
         # visualize
         cv2.imshow('frame', frame_)
